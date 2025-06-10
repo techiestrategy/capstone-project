@@ -3,6 +3,7 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
+// import { Text } from 'react-native'; // You won't need Text here if you don't show a title
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -13,16 +14,25 @@ export default function RootLayout() {
   });
 
   if (!loaded) {
-    // Async font loading only occurs in development.
     return null;
   }
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="index" options={{
-                  title: 'Home'
-                }} />
+        {/*
+          Removing the 'title' from 'index' screen because it's headerShown: false
+          and it's not the screen causing the issue based on your latest info.
+          The previous fix for 'Home' was a general good practice but not the root cause here.
+        */}
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+
+        {/* This is the CRUCIAL ADDITION for your login route */}
+        <Stack.Screen
+          name="(auth)/login" // Matches the router.push('login') call
+          options={{ headerShown: false }} // Explicitly hide header at the navigator level
+        />
+
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
