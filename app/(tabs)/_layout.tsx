@@ -32,7 +32,7 @@ export default function TabLayout() {
       <Tabs.Screen
       name="index"
       options={{
-        title: 'Dashboard',
+        //title: 'Dashboard',
         tabBarIcon: ({ color }) => (
           <FontAwesome5 name="home" size={25} color={color} />
         ),
@@ -44,7 +44,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="harvest"
         options={{
-          title: 'Harvest',
+          //title: 'Harvest',
           tabBarIcon: ({ color }) => <FontAwesome5 name="carrot" size={25} color={color} />,
           tabBarLabel: ({ focused }) => (
           <Text style={{ color: 'black', fontSize: 11, fontWeight: focused ? 'bold' : 'normal', }}>Harvest</Text>
@@ -54,7 +54,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="inventory"
         options={{
-          title: 'Inventory',
+          //title: 'Inventory',
           tabBarIcon: ({ color }) => <FontAwesome5 name="database" size={25} color={color} />,
           tabBarLabel: ({ focused }) => (
           <Text style={{ color: 'black', fontSize: 11, fontWeight: focused ? 'bold' : 'normal', }}>Inventory</Text>
@@ -64,7 +64,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="pesticides"
         options={{
-          title: 'Pesticides',
+          //title: 'Pesticides',
           tabBarIcon: ({ color }) => <FontAwesome5 name="fire-extinguisher" size={25} color={color} />,
           tabBarLabel: ({ focused }) => (
           <Text style={{ color: 'black', fontSize: 11, fontWeight: focused ? 'bold' : 'normal', }}>Pesticides</Text>
@@ -74,7 +74,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="alerts"
         options={{
-          title: 'Alerts',
+          //title: 'Alerts',
           tabBarIcon: ({ color }) => <FontAwesome5 name="bell" size={25} color={color} />,
           tabBarLabel: ({ focused }) => (
           <Text style={{ color: 'black', fontSize: 11, fontWeight: focused ? 'bold' : 'normal', }}>Alerts</Text>
