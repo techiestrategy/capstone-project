@@ -26,6 +26,7 @@ const handleSignIn = () => {
 
   const handleSignUp = () => {
     // Navigate to sign-up screen
+    router.push('register')
     console.log('Navigating to Sign Up');
   };
 
@@ -39,7 +40,7 @@ const handleSignIn = () => {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.mainContainer}>
-      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+      
         {/* Header */}
           <View style={styles.header}>
             <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
@@ -56,6 +57,9 @@ const handleSignIn = () => {
           />
         </View>
 
+
+
+<ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
       <View style={styles.formContainer}>
         <Text style={styles.inputLabel}>Enter Email / Phone</Text>
           <View style={styles.inputWrapper}>
@@ -166,10 +170,8 @@ export default login
 const styles = StyleSheet.create({
 
   mainContainer: {
-    flex: 1,
-  },
-    Container: {
-    marginTop: 60,
+    flexGrow: 1,
+    
   },
   header: {
     flexDirection: 'row',
@@ -199,12 +201,18 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
-    backgroundColor: '#00A859', 
+    backgroundColor: '#00A859',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     padding: 20,
-    paddingTop: 30,
-    height: '100%',
+    paddingTop: 60,
+    paddingHorizontal: 24,
+  },
+  scrollContainer: {
+    flexGrow: 1, 
+    paddingTop: 30, 
+    paddingBottom: 40, 
+    justifyContent: 'space-between', 
   },
   inputLabel: {
     color: '#fff',
