@@ -38,6 +38,11 @@ export default function RootLayout() {
           options={{ headerShown: false }} // Explicitly hide header at the navigator level
         />
 
+        <Stack.Screen
+          name="myFarm" // Matches the router.push('login') call
+          options={{ headerShown: false }} // Explicitly hide header at the navigator level
+        />
+
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>

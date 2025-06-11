@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import {
   Image,
@@ -100,6 +101,8 @@ const AlertCard = ({ title, date }) => (
 // --- Main Screen Component ---
 
 const DashboardScreen = () => {
+  const router = useRouter();
+  
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
@@ -117,7 +120,7 @@ const DashboardScreen = () => {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>My Farm</Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => router.push('myFarm')}>
                 <Text style={styles.viewAllText}>VIEW ALL FARM</Text>
               </TouchableOpacity>
             </View>
