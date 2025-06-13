@@ -1,14 +1,15 @@
+import FarmCard from '@/components/FarmCard';
+import { COLORS } from '@/constants/ThemeColors';
 import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import {
-    FlatList,
-    ImageBackground,
-    SafeAreaView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  FlatList,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // Mock data for the farms list
@@ -38,33 +39,6 @@ const farmData = [
     imageUri: 'https://images.unsplash.com/photo-1710425417427-fee66167fa35?q=80&w=1974&auto=format&fit=crop',
   },
 ];
-
-// Reusable Farm Card Component
-const FarmCard = ({ item }) => (
-  <TouchableOpacity style={styles.cardContainer} activeOpacity={0.9}>
-    <ImageBackground
-      source={{ uri: item.imageUri }}
-      style={styles.cardBackground}
-      imageStyle={{ borderRadius: 20 }}
-    >
-      <View style={styles.cardOverlay}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.cardLocation}>{item.location}</Text>
-          <TouchableOpacity style={styles.arrowButton}>
-            <Ionicons name="arrow-forward" size={20} color={COLORS.white} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.cardFooter}>
-          <View>
-            <Text style={styles.cardFieldName}>{item.fieldName}</Text>
-            <Text style={styles.cardHarvestDate}>Harvest on {item.harvestDate}</Text>
-          </View>
-          <Text style={styles.cardYield}>{item.yieldValue}</Text>
-        </View>
-      </View>
-    </ImageBackground>
-  </TouchableOpacity>
-);
 
 // Main Screen Component
 const MyFarmScreen = () => {
@@ -103,14 +77,6 @@ const MyFarmScreen = () => {
 
 // --- Styles ---
 
-const COLORS = {
-  primary: '#F39C12', // Orange
-  secondary: '#2ECC71', // Green
-  white: '#FFFFFF',
-  black: '#1C1C1E',
-  gray: '#8A8A8E',
-  background: '#FFFFFF',
-};
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -124,8 +90,8 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     marginTop: 40,
   },
-  backButton: {
-    backgroundColor: COLORS.primary,
+  backButton: { 
+    backgroundColor: COLORS.farmInventoryOrange,
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -147,68 +113,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 20,
   },
-  cardContainer: {
-    height: 220,
-    borderRadius: 20,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 5,
-    backgroundColor: COLORS.white, // Important for shadow to show on iOS
-  },
-  cardBackground: {
-    flex: 1,
-  },
-  cardOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.35)',
-    borderRadius: 20,
-    padding: 20,
-    justifyContent: 'space-between',
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-  },
-  cardLocation: {
-    fontSize: 16,
-    color: COLORS.white,
-    fontWeight: '500',
-  },
-  arrowButton: {
-    backgroundColor: COLORS.secondary,
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cardFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-  },
-  cardFieldName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: COLORS.white,
-    marginBottom: 5,
-  },
-  cardHarvestDate: {
-    fontSize: 14,
-    color: COLORS.white,
-    opacity: 0.9,
-  },
-  cardYield: {
-    fontSize: 14,
-    color: COLORS.white,
-    fontWeight: '600',
-  },
   addButton: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.farmInventoryOrange,
     paddingVertical: 18,
     borderRadius: 15,
     alignItems: 'center',

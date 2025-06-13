@@ -1,8 +1,12 @@
+import AlertCard from '@/components/AlertCard';
+import EarningsCard from '@/components/EarningsCard';
+import FarmCard from '@/components/FarmCard';
+import { COLORS, SIZES } from '@/constants/ThemeColors';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import {
+  FlatList,
   Image,
-  ImageBackground,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -12,7 +16,39 @@ import {
   View,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { Dimensions } from 'react-native';
+
+const screenWidth = Dimensions.get('window').width;
+const itemWidth = screenWidth * 0.85;
+
+// Mock data for the farms list
+const farmData = [
+  {
+    id: '1',
+    location: 'Zara Village',
+    fieldName: 'Orange Field',
+    harvestDate: 'Jan 1, 2025',
+    yieldValue: '90KG/HA',
+    imageUri: 'https://images.unsplash.com/photo-1536657464919-892534f60d6e?q=80&w=2074&auto=format&fit=crop',
+  },
+  {
+    id: '2',
+    location: 'Odoguyan Village',
+    fieldName: 'Maize Field',
+    harvestDate: 'Mar 1, 2025',
+    yieldValue: '100KG/HA',
+    imageUri: 'https://images.unsplash.com/photo-1654066127697-01165de1d877?q=80&w=1974&auto=format&fit=crop',
+  },
+  {
+    id: '3',
+    location: 'Oniyale Ota',
+    fieldName: 'Cassava Field',
+    harvestDate: 'May 1, 2025',
+    yieldValue: '100KG/HA',
+    imageUri: 'https://images.unsplash.com/photo-1710425417427-fee66167fa35?q=80&w=1974&auto=format&fit=crop',
+  },
+];
 
 // --- Reusable UI Components ---
 
@@ -20,12 +56,12 @@ const Header = () => (
   <View style={styles.headerContainer}>
     <View style={styles.headerLeft}>
       <View style={styles.logoContainer}>
-                <Image
-                  source={require('@/assets/images/farmventory-logo.png')} // You'll need to add your logo here
-                  style={styles.logo}
-                  resizeMode="contain"
-                />
-              </View>
+        <Image
+          source={require('@/assets/images/farmventory-logo.png')} // You'll need to add your logo here
+          style={styles.logo}
+          resizeMode="contain"
+        />
+      </View>
     </View>
     <View style={styles.headerRight}>
       <TouchableOpacity style={styles.notificationButton}>
@@ -39,70 +75,13 @@ const Header = () => (
   </View>
 );
 
-const EarningsCard = ({ crop, amount, percentage, isIncrease }) => (
-  <View style={styles.earningsCard}>
-    <Text style={styles.cardTitle}>Total Earnings</Text>
-    <Text style={styles.cardTitle}>from {crop}</Text>
-    <Text style={[styles.cardSubtitle, { color: isIncrease ? COLORS.green : COLORS.orange }]}>
-      This Month
-    </Text>
-    <Text style={[styles.earningsAmount, { color: isIncrease ? COLORS.green : COLORS.orange }]}>
-      ₦{amount}
-    </Text>
-    <View style={[
-      styles.percentageContainer,
-      { 
-        borderColor: isIncrease ? COLORS.green : COLORS.orange,
-        backgroundColor: isIncrease ? COLORS.lightGreen : COLORS.lightOrange,
-      }
-    ]}>
-      <MaterialCommunityIcons
-        name={isIncrease ? 'arrow-up' : 'arrow-down'}
-        size={16}
-        color={isIncrease ? COLORS.green : COLORS.orange}
-      />
-      <Text style={[styles.percentageText, { color: isIncrease ? COLORS.green : COLORS.orange }]}>
-        {' '}{percentage}%
-      </Text>
-    </View>
-    <Text style={styles.vsLastMonthText}>vs Last Month</Text>
-  </View>
-);
 
-const FarmCard = ({ location, fieldName, harvestDate, yieldValue, imageUri }) => (
-  <ImageBackground
-    source={{ uri: imageUri }}
-    style={styles.farmCard}
-    imageStyle={{ borderRadius: 20 }}
-  >
-    <View style={styles.farmCardOverlay}>
-      <Text style={styles.farmLocation}>{location}</Text>
-      <Text style={styles.farmName}>{fieldName}</Text>
-      <View style={styles.farmDetails}>
-        <Text style={styles.farmInfoText}>Harvest on {harvestDate}</Text>
-        <Text style={styles.farmInfoText}>{yieldValue}</Text>
-      </View>
-    </View>
-  </ImageBackground>
-);
-
-const AlertCard = ({ title, date }) => (
-  <View style={styles.alertCard}>
-    <View style={{flex: 1, marginRight: 10}}>
-      <Text style={styles.alertTitle}>{title}</Text>
-      <Text style={styles.alertDate}>{date}</Text>
-    </View>
-    <TouchableOpacity style={styles.markDoneButton}>
-      <Text style={styles.markDoneText}>Mark as Done</Text>
-    </TouchableOpacity>
-  </View>
-);
 
 // --- Main Screen Component ---
 
 const DashboardScreen = () => {
   const router = useRouter();
-  
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
@@ -120,26 +99,25 @@ const DashboardScreen = () => {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>My Farm</Text>
-              <TouchableOpacity onPress={() => router.push('myFarm')}>
+              <TouchableOpacity onPress={() => router.push('/myfarm/listFarm')}>
                 <Text style={styles.viewAllText}>VIEW ALL FARM</Text>
               </TouchableOpacity>
             </View>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <FarmCard
-                location="Zara Village"
-                fieldName="Orange Field"
-                harvestDate="January 1, 2025"
-                yieldValue="90.0KG / HA"
-                imageUri="https://images.unsplash.com/photo-1536657464919-892534f60d6e?q=80&w=2074&auto=format&fit=crop"
-              />
-              <FarmCard
-                location="Kano State"
-                fieldName="Tomato Patch"
-                harvestDate="March 15, 2025"
-                yieldValue="75.5KG / HA"
-                imageUri="https://images.unsplash.com/photo-1598512752271-33f913a5af13?q=80&w=2070&auto=format&fit=crop"
-              />
-            </ScrollView>
+
+            <FlatList
+              horizontal showsHorizontalScrollIndicator={false}
+              data={farmData}
+              renderItem={({ item }) => (
+                <View style={{ width: itemWidth }}>
+                  <FarmCard item={item} />
+                </View>
+              )}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={styles.listContentContainer}
+              showsVerticalScrollIndicator={false}
+              ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
+
+            />
           </View>
 
           {/* Active Alerts Section */}
@@ -155,37 +133,15 @@ const DashboardScreen = () => {
           </View>
         </ScrollView>
       </View>
-      
-     
+
+
     </SafeAreaView>
   );
 };
 
 // --- Styles ---
 
-const COLORS = {
-  primary: '#34A853',
-  white: '#FFFFFF',
-  black: '#000000',
-  lightGray: '#F5F5F5',
-  gray: '#8A8A8A',
-  darkGray: '#333333',
-  green: '#34A853',
-  lightGreen: 'rgba(52, 168, 83, 0.1)',
-  orange: '#F39C12',
-  lightOrange: 'rgba(243, 156, 18, 0.1)',
-};
 
-const SIZES = {
-  base: 8,
-  small: 12,
-  font: 14,
-  medium: 16,
-  large: 18,
-  xl: 20,
-  xxl: 24,
-  h1: 25,
-};
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -203,7 +159,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 10,
     paddingBottom: 20,
-        marginTop: 40,
+    marginTop: 40,
   },
   headerLeft: {
     flexDirection: 'row',
@@ -223,9 +179,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.darkGray,
   },
-    logo: {
-    width: 150, 
-    height: 50, 
+  logo: {
+    width: 150,
+    height: 50,
   },
   headerRight: {
     flexDirection: 'row',
@@ -246,47 +202,11 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   earningsSection: {
+
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 15,
-  },
-  earningsCard: {
-    flex: 1,
-    backgroundColor: COLORS.lightGray,
-    borderRadius: 20,
-    padding: 15,
-  },
-  cardTitle: {
-    fontSize: SIZES.medium,
-    color: COLORS.darkGray,
-    fontWeight: '600',
-  },
-  cardSubtitle: {
-    fontSize: SIZES.font,
-    marginTop: 4,
-  },
-  earningsAmount: {
-    fontSize: SIZES.h1,
-    fontWeight: 'bold',
-    marginVertical: 10,
-  },
-  percentageContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-    borderWidth: 1,
-    borderRadius: 15,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
-  percentageText: {
-    fontSize: SIZES.font,
-    fontWeight: 'bold',
-  },
-  vsLastMonthText: {
-    marginTop: 8,
-    fontSize: SIZES.small,
-    color: COLORS.gray,
+
   },
   section: {
     marginTop: 25,
@@ -337,38 +257,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: SIZES.small,
   },
-  alertCard: {
-    backgroundColor: COLORS.lightGray,
-    borderRadius: 20,
-    padding: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  alertTitle: {
-    fontSize: SIZES.medium,
-    color: COLORS.darkGray,
-    fontWeight: '600',
-    lineHeight: 22,
-  },
-  alertDate: {
-    fontSize: SIZES.font,
-    color: COLORS.green,
-    marginTop: 5,
-  },
-  markDoneButton: {
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    borderWidth: 1.5,
-    borderColor: COLORS.orange,
-    borderRadius: 20,
-  },
-  markDoneText: {
-    color: COLORS.orange,
-    fontWeight: 'bold',
-    fontSize: SIZES.font,
-  },
+
   bottomNav: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -384,6 +273,20 @@ const styles = StyleSheet.create({
   navLabel: {
     fontSize: SIZES.small,
     marginTop: 4,
+  },
+  addButton: {
+    backgroundColor: COLORS.farmInventoryOrange,
+    paddingVertical: 18,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10, // Spacing above the button
+    marginBottom: 40,
+  },
+  addButtonText: {
+    color: COLORS.white,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 

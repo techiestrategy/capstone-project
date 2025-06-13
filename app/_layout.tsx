@@ -10,7 +10,9 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    PoppinsBold: require('../assets/fonts/PoppinsBold.ttf'),
+    PoppinsMedium: require('../assets/fonts/PoppinsMedium.ttf'),
+    PoppinsSemiBold: require('../assets/fonts/PoppinsSemiBold.ttf'),
   });
 
   if (!loaded) {
@@ -38,11 +40,7 @@ export default function RootLayout() {
           options={{ headerShown: false }} // Explicitly hide header at the navigator level
         />
 
-        <Stack.Screen
-          name="myFarm" // Matches the router.push('login') call
-          options={{ headerShown: false }} // Explicitly hide header at the navigator level
-        />
-
+        <Stack.Screen name="myfarm" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
