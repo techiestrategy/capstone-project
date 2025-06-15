@@ -124,7 +124,7 @@ const DashboardScreen = () => {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Active Alerts</Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => router.push('/(tabs)/alerts')}>
                 <Text style={styles.viewAllText}>VIEW ALL ALERTS</Text>
               </TouchableOpacity>
             </View>

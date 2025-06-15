@@ -5,6 +5,7 @@ import { Platform, Text } from 'react-native';
 import { HapticTab } from '@/components/HapticTab';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 
@@ -75,7 +76,7 @@ export default function TabLayout() {
         name="alerts"
         options={{
           //title: 'Alerts',
-          tabBarIcon: ({ color }) => <FontAwesome5 name="bell" size={25} color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome name="bell" size={24} color={color} />,
           tabBarLabel: ({ focused }) => (
           <Text style={{ color: 'black', fontSize: 11, fontWeight: focused ? 'bold' : 'normal', }}>Alerts</Text>
         ),
