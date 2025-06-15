@@ -38,11 +38,13 @@ const styles = StyleSheet.create({
     color: COLORS.darkGray,
     fontWeight: '600',
     lineHeight: 22,
+        fontFamily: 'PoppinsMedium'
   },
   alertDate: {
     fontSize: SIZES.font,
     color: COLORS.green,
     marginTop: 5,
+        fontFamily: 'PoppinsBold'
   },
   markDoneButton: {
     paddingHorizontal: 15,
@@ -53,7 +55,7 @@ const styles = StyleSheet.create({
   },
   markDoneText: {
     color: COLORS.orange,
-    fontWeight: 'bold',
     fontSize: SIZES.font,
+        fontFamily: 'PoppinsMedium'
   },
 });

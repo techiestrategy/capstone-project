@@ -13,6 +13,7 @@ export default function RootLayout() {
     PoppinsBold: require('../assets/fonts/PoppinsBold.ttf'),
     PoppinsMedium: require('../assets/fonts/PoppinsMedium.ttf'),
     PoppinsSemiBold: require('../assets/fonts/PoppinsSemiBold.ttf'),
+    PoppinsExtraBold: require('../assets/fonts/PoppinsExtraBold.ttf'),
   });
 
   if (!loaded) {
@@ -36,11 +37,19 @@ export default function RootLayout() {
         />
 
         <Stack.Screen
+          name="(auth)/forgotpass" // Matches the router.push('login') call
+          options={{ headerShown: false }} // Explicitly hide header at the navigator level
+        />
+
+        <Stack.Screen
           name="(auth)/register" // Matches the router.push('login') call
           options={{ headerShown: false }} // Explicitly hide header at the navigator level
         />
 
         <Stack.Screen name="myfarm" options={{ headerShown: false }} />
+        <Stack.Screen name="harvest" options={{ headerShown: false }} />
+        <Stack.Screen name="inventory" options={{ headerShown: false }} />
+         <Stack.Screen name="alert" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
