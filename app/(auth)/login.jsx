@@ -1,3 +1,4 @@
+import Button from '@/components/Button';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
@@ -12,7 +13,8 @@ const login = () => {
   const [agreeToTerms, setAgreeToTerms] = useState(false);
 
 const handleSignIn = () => {
-   router.push('(tabs)')
+   //router.push('(tabs)')
+   router.push('/farmsetup/thisFarm')
     console.log('Sign In pressed!');
     console.log('Email/Phone:', emailPhone);
     console.log('Password:', password);
@@ -131,9 +133,8 @@ const handleSignIn = () => {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={styles.signInButton} onPress={handleSignIn}>
-            <Text style={styles.signInButtonText}>Sign In</Text>
-          </TouchableOpacity>
+          
+          <Button text="Sign In" onPress={handleSignIn}  />
 
           <View style={styles.signUpPrompt}>
             <Text style={styles.signUpText}>Don't have an account?</Text>
@@ -268,18 +269,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: 'bold',
   },
-  signInButton: {
-    backgroundColor: '#F58634', // Orange color for Sign In button
-    borderRadius: 8,
-    paddingVertical: 15,
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  signInButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
+  
   signUpPrompt: {
     flexDirection: 'row',
     justifyContent: 'center',

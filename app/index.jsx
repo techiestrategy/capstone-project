@@ -1,7 +1,7 @@
 // app/onboarding.jsx
 
 import { FontAwesome5 } from '@expo/vector-icons';
-import { useRouter } from 'expo-router'; // If using Expo Router
+import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useRef, useState } from 'react';
 import {
@@ -10,18 +10,16 @@ import {
   Image,
   Platform,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
   View,
 } from 'react-native';
 
-// Import your constants - ADJUST THIS PATH if your theme.js is elsewhere
 import { COLORS, SIZES } from '../constants/ThemeColors';
 
-const { width } = Dimensions.get('window');
-
-// Data for your onboarding slides
 const slides = [
   {
     id: '1',
@@ -55,104 +53,28 @@ const slides = [
   },
 ];
 
-// Individual Onboarding Slide Component
 const OnboardingItem = ({ item }) => {
-  // Using the actual images you provided
-  const farmventoryLogo = require('../assets/images/farmventory-logo.png'); // Assuming this path
-
-  if (item.id === '1') {
-    return (
-      <View style={styles.slide}>
-        <View style={styles.topImageWrapper}>
-          <Image source={item.imageTop} style={styles.topImage} resizeMode="cover" />
-        </View>
-
-        <View style={styles.textSection}>
-          <Text style={styles.mainTitle}>
-            {typeof item.mainTitle === 'object' ? (
-              <>
-                <Text style={styles.bold}>{item.mainTitle.part1}</Text>{'\n'}
-                <Text>{item.mainTitle.part2}</Text>{'\n'}
-                <Text style={styles.bold}>{item.mainTitle.part3}</Text>
-              </>
-            ) : (
-              item.mainTitle?.split('\n').map((line, index) => (
-                <Text key={index}>
-                  {line}
-                  {'\n'}
-                </Text>
-              ))
-            )}
-          </Text>
-
-          <Text style={styles.description}>{item.description}</Text>
-        </View>
+  return (
+    <View style={styles.slide}>
+      <View style={styles.topImageWrapper}>
+        <Image source={item.imageTop} style={styles.topImage} resizeMode="contain" />
       </View>
-    );
-  } else if (item.id === '2') {
-    return (
-      <View style={styles.slide}>
-        <View style={styles.topImageWrapper}>
-          <Image source={item.imageTop} style={styles.topImage} resizeMode="cover" />
-        </View>
 
-        <View style={styles.textSection}>
-          <Text style={styles.mainTitle}>
-            {typeof item.mainTitle === 'object' ? (
-              <>
-                <Text style={styles.bold}>{item.mainTitle.part1}</Text>{'\n'}
-                <Text>{item.mainTitle.part2}</Text>{'\n'}
-                <Text style={styles.bold}>{item.mainTitle.part3}</Text>
-              </>
-            ) : (
-              item.mainTitle?.split('\n').map((line, index) => (
-                <Text key={index}>
-                  {line}
-                  {'\n'}
-                </Text>
-              ))
-            )}
-          </Text>
+      <View style={styles.textSection}>
+        <Text style={styles.mainTitle}>
+          <Text style={styles.bold}>{item.mainTitle.part1}</Text>{'\n'}
+          <Text>{item.mainTitle.part2}</Text>{'\n'}
+          <Text style={styles.bold}>{item.mainTitle.part3}</Text>
+        </Text>
 
-          <Text style={styles.description}>{item.description}</Text>
-        </View>
+        <Text style={styles.description}>{item.description}</Text>
       </View>
-    );
-  } else if (item.id === '3') {
-    return (
-      <View style={styles.slide}>
-        <View style={styles.topImageWrapper}>
-          <Image source={item.imageTop} style={styles.topImage} resizeMode="cover" />
-        </View>
-
-        <View style={styles.textSection}>
-          <Text style={styles.mainTitle}>
-            {typeof item.mainTitle === 'object' ? (
-              <>
-                <Text style={styles.bold}>{item.mainTitle.part1}</Text>{'\n'}
-                <Text>{item.mainTitle.part2}</Text>{'\n'}
-                <Text style={styles.bold}>{item.mainTitle.part3}</Text>
-              </>
-            ) : (
-              item.mainTitle?.split('\n').map((line, index) => (
-                <Text key={index}>
-                  {line}
-                  {'\n'}
-                </Text>
-              ))
-            )}
-          </Text>
-
-          <Text style={styles.description}>{item.description}</Text>
-        </View>
-      </View>
-    );
-  }
-  return null;
+    </View>
+  );
 };
 
-
 const OnboardingScreen = () => {
+  const { width } = useWindowDimensions();
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef(null);
   const router = useRouter();
@@ -162,12 +84,12 @@ const OnboardingScreen = () => {
       flatListRef.current.scrollToIndex({ index: currentIndex + 1 });
       setCurrentIndex(currentIndex + 1);
     } else {
-      router.replace('/login'); // Example: navigate to login screen
+      router.replace('/login');
     }
   };
 
   const handleSkip = () => {
-    router.replace('/login'); // Example: skip to login screen
+    router.replace('/login');
   };
 
   const updateCurrentSlideIndex = (e) => {
@@ -178,6 +100,8 @@ const OnboardingScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+             
       <StatusBar style="dark" />
       <FlatList
         ref={flatListRef}
@@ -192,7 +116,6 @@ const OnboardingScreen = () => {
       />
 
       <View style={styles.footer}>
-        {/* Dots Indicator */}
         <View style={styles.indicatorContainer}>
           {slides.map((_, index) => (
             <View
@@ -205,7 +128,6 @@ const OnboardingScreen = () => {
           ))}
         </View>
 
-        {/* Buttons */}
         <View style={styles.buttonsContainer}>
           {currentIndex < slides.length - 1 ? (
             <>
@@ -223,9 +145,12 @@ const OnboardingScreen = () => {
           )}
         </View>
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
+
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -233,76 +158,70 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   slide: {
-    width: width,
+    width,
     alignItems: 'center',
     paddingHorizontal: SIZES.padding,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight + SIZES.padding : SIZES.padding,
-    paddingBottom: SIZES.padding,
     justifyContent: 'space-between',
+    paddingTop: Platform.OS === 'android' ? SIZES.padding * 2 : SIZES.padding,
   },
-  topImageWrapper: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+topImageWrapper: {
+  width: SIZES.width * 0.99,
+  height: SIZES.height * 0.5,
+  justifyContent: 'flex-end',
+  alignItems: 'flex-end',
+  position: 'relative',
+},
 
-  },
-  // --- Slide Specific Styles ---
-  topImage: {
-    width: width - (SIZES.padding * 3),
-    height: width * 0.85,
-    borderRadius: SIZES.radius + 7,
-    overflow: 'hidden',
-    alignSelf: 'flex-end',
-    marginTop: 50,
-  },
+topImage: {
+  position: 'absolute',
+  right: 0,
+  width: SIZES.width * 0.9,
+  height: '100%',
+  resizeMode: 'contain',
+},
 
-  // --- Common Text Section Styles ---
+
   textSection: {
     width: '100%',
-    flex: 0.7,
-    justifyContent: 'flex-start',
-    marginLeft: 50,
+    paddingHorizontal: SIZES.padding,
+    paddingTop: SIZES.padding * 0.5,
   },
   mainTitle: {
-    fontSize: SIZES.h1 + 5, 
-    color: COLORS.darkGray, 
+    fontSize: SIZES.h1,
+    color: COLORS.darkGray,
     textAlign: 'left',
-    marginBottom: 6, 
-    marginTop: -30,
+    marginBottom: SIZES.base,
+    lineHeight: SIZES.h1 * 1.2,
   },
   bold: {
     fontFamily: 'PoppinsExtraBold',
     fontWeight: 'bold',
   },
   description: {
-    fontSize: 23, 
-    color: COLORS.primary, 
+    fontSize: SIZES.medium + 2,
+    color: COLORS.primary,
     textAlign: 'left',
-    padding: 20,
-    marginTop: -20,
-    marginLeft: -20,
+    marginTop: SIZES.base,
   },
-
-  // --- Footer Styles ---
   footer: {
-    paddingHorizontal: SIZES.padding, 
-    paddingVertical: 60, 
+    paddingHorizontal: SIZES.padding,
+    paddingVertical: SIZES.padding * 1.5,
     alignItems: 'center',
   },
   indicatorContainer: {
     flexDirection: 'row',
-    marginBottom: SIZES.padding, 
+    marginBottom: SIZES.padding,
   },
   indicator: {
-    width: SIZES.base, 
-    height: SIZES.base, 
-    borderRadius: SIZES.base / 2, 
-    backgroundColor: COLORS.lightGray, 
-    marginHorizontal: SIZES.base / 2, 
+    width: SIZES.base,
+    height: SIZES.base,
+    borderRadius: SIZES.base / 2,
+    backgroundColor: COLORS.lightGray,
+    marginHorizontal: SIZES.base / 2,
   },
   currentIndicator: {
-    backgroundColor: COLORS.primary, 
-    width: SIZES.base * 2, 
+    backgroundColor: COLORS.primary,
+    width: SIZES.base * 2,
   },
   buttonsContainer: {
     flexDirection: 'row',
@@ -311,35 +230,35 @@ const styles = StyleSheet.create({
   },
   skipButton: {
     paddingVertical: SIZES.medium,
-    paddingHorizontal: SIZES.large, 
-    borderRadius: SIZES.radius, 
+    paddingHorizontal: SIZES.large,
+    borderRadius: SIZES.radius,
     alignItems: 'center',
     justifyContent: 'center',
   },
   skipButtonText: {
-    color: COLORS.gray, 
-    fontSize: SIZES.large, 
+    color: COLORS.gray,
+    fontSize: SIZES.large,
     fontWeight: 'bold',
   },
   nextButton: {
-    backgroundColor: COLORS.primary, 
+    backgroundColor: COLORS.primary,
     borderRadius: SIZES.large * 2,
-    width: 60,
-    height: 60,
+    width: width * 0.14,
+    height: width * 0.14,
     alignItems: 'center',
     justifyContent: 'center',
   },
   getStartedButton: {
-    backgroundColor: COLORS.primary, 
-    borderRadius: SIZES.radius, 
-    paddingVertical: SIZES.medium, 
+    backgroundColor: COLORS.primary,
+    borderRadius: SIZES.radius,
+    paddingVertical: SIZES.medium,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
   },
   getStartedButtonText: {
-    color: COLORS.white, 
-    fontSize: SIZES.large, 
+    color: COLORS.white,
+    fontSize: SIZES.large,
     fontWeight: 'bold',
   },
 });

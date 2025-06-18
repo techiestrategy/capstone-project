@@ -1,8 +1,8 @@
 import { COLORS, SIZES } from '@/constants/ThemeColors';
 import {
-    StyleSheet,
-    Text,
-    View
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -56,15 +56,16 @@ const styles = StyleSheet.create({
     fontSize: SIZES.medium,
     color: COLORS.darkGray,
     fontWeight: '600',
+    fontFamily: 'PoppinsMedium'
   },
   cardSubtitle: {
     fontSize: SIZES.font,
     marginTop: 4,
   },
   earningsAmount: {
-    fontSize: SIZES.h1,
-    fontWeight: 'bold',
+    fontSize: SIZES.xxxl,
     marginVertical: 10,
+       fontFamily: 'PoppinsBold'
   },
     percentageContainer: {
     flexDirection: 'row',

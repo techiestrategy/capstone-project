@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,15 +6,19 @@ import {
   View,
 } from 'react-native';
 
-const Button = ({ text, textColor = '#fff', onPress }) => {
+const Button = ({ text, textColor = '#fff', spaceBottom = 0, onPress }) => {
   const { width } = useWindowDimensions();
   const buttonWidth = width * 0.9;
 
   return (
     <View style={{ alignItems: 'center' }}>
-      <TouchableOpacity style={[styles.button, { width: buttonWidth }]} onPress={onPress}>
+      {/* <TouchableOpacity style={[styles.button, { width: buttonWidth }]} onPress={onPress}>
         <Text style={[styles.buttonText, { color: textColor }]}>{text}</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+
+      <TouchableOpacity style={[styles.signInButton, { marginVertical: spaceBottom }]} onPress={onPress}>
+            <Text style={[styles.signInButtonText, { color: textColor }]}>{text}</Text>
+          </TouchableOpacity>
     </View>
   );
 };
@@ -23,18 +26,17 @@ const Button = ({ text, textColor = '#fff', onPress }) => {
 export default Button;
 
 const styles = StyleSheet.create({
-  button: {
-    height: 60,
-    backgroundColor: '#212121',
-    justifyContent: 'center',
+  signInButton: {
+    backgroundColor: '#F58634', // Orange color for Sign In button
+    borderRadius: 8,
+    paddingVertical: 15,
+    width: '100%',
     alignItems: 'center',
-    borderRadius: 10,
-    paddingHorizontal: 20,
-    marginBottom: 40,
-    marginTop: 20,
+    marginBottom: 20,
   },
-  buttonText: {
+  signInButtonText: {
+    color: '#fff',
     fontSize: 18,
-    fontFamily: 'Poppins_Medium',
+    fontWeight: 'bold',
   },
 });

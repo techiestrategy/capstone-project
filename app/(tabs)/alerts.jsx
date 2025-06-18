@@ -1,4 +1,5 @@
 import AlertCard from '@/components/AlertCard';
+import Button from '@/components/Button';
 import { COLORS, SIZES } from '@/constants/ThemeColors';
 import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
@@ -63,9 +64,7 @@ const MyAlertScreen = () => {
             <AlertCard title="Begin Pruning of Plantain by October" date="October 1, 2025" />
           </View>
 
-          <TouchableOpacity style={styles.addButton} activeOpacity={0.8} onPress={handleAddNew}>
-                          <Text style={styles.addButtonText}>Add New Alert</Text>
-                      </TouchableOpacity>
+          <Button text="Add New Alert" onPress={handleAddNew} spaceBottom={30} />
           </ScrollView>
     </SafeAreaView>
   );
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: COLORS.black,
     marginLeft: 0,
-        fontFamily: 'PoppinsBold'
+    fontFamily: 'PoppinsBold'
   },
   headerSubtitle: {
     fontSize: 14,

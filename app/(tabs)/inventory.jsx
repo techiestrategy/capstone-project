@@ -1,3 +1,4 @@
+import Button from '@/components/Button';
 import InventoryCard from '@/components/InventoryCard';
 import { COLORS, SIZES } from '@/constants/ThemeColors';
 import { useNavigation } from '@react-navigation/native';
@@ -8,7 +9,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View
 } from 'react-native';
 // Mock data for the farms list
@@ -82,9 +82,8 @@ const MyInventoryScreen = () => {
         contentContainerStyle={styles.listContentContainer}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={
-            <TouchableOpacity style={styles.addButton} activeOpacity={0.8} onPress={handleAddNew}>
-                <Text style={styles.addButtonText}>Add New Item</Text>
-            </TouchableOpacity>
+            
+            <Button text="Add New Item" onPress={handleAddNew} spaceBottom={20} />
         }
       />
     </SafeAreaView>
@@ -116,7 +115,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 28,
-    fontWeight: 'bold',
+     fontFamily: 'PoppinsBold',
     color: COLORS.black,
     marginLeft: 0,
   },
