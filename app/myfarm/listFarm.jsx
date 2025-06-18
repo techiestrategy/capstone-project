@@ -1,3 +1,4 @@
+import Button from '@/components/Button';
 import FarmCard from '@/components/FarmCard';
 import { COLORS } from '@/constants/ThemeColors';
 import { useNavigation } from '@react-navigation/native';
@@ -40,6 +41,14 @@ const farmData = [
   },
 ];
 
+const handleAddFarm = () => {
+    // Navigate to forgot password screen
+    router.push('farmsetup/addNewFarm')
+    console.log('Navigating to Farm Setup');
+  };
+
+
+  const router = useRouter();
 // Main Screen Component
 const MyFarmScreen = () => {
     const navigation = useNavigation();
@@ -66,9 +75,7 @@ const MyFarmScreen = () => {
         contentContainerStyle={styles.listContentContainer}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={
-            <TouchableOpacity style={styles.addButton} activeOpacity={0.8}>
-                <Text style={styles.addButtonText}>Add New Farm</Text>
-            </TouchableOpacity>
+            <Button text="Add New Farm" onPress={handleAddFarm} spaceBottom={20}  />
         }
       />
     </SafeAreaView>
@@ -82,6 +89,7 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: COLORS.background,
+    marginBottom: 30,
   },
   header: {
     flexDirection: 'row',
@@ -113,20 +121,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 20,
   },
-  addButton: {
-    backgroundColor: COLORS.farmInventoryOrange,
-    paddingVertical: 18,
-    borderRadius: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10, // Spacing above the button
-    marginBottom: 40,
-  },
-  addButtonText: {
-    color: COLORS.white,
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
+
 });
 
 export default MyFarmScreen;

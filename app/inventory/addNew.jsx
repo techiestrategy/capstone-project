@@ -1,397 +1,215 @@
+import HeaderWithBackCard from '@/components/HeaderWithBackCard';
+import InventoryForm from '@/components/InventoryForm';
 import { COLORS, SIZES } from '@/constants/ThemeColors';
-import { useNavigation } from '@react-navigation/native';
-import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { KeyboardAvoidingView, Modal, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 
-
-
-const FarmFormScreen = () => {
-  const [selectedFarm, setSelectedFarm] = useState(null);
-  const [isFarmDropdownVisible, setFarmDropdownVisible] = useState(false);
-  const [description, setDescription] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [unit, setUnit] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [isCategoryDropdownVisible, setCategoryDropdownVisible] = useState(false);
-  //const [selectedCropTypes, setSelectedCropTypes] = useState([]);
-  const [notes, setNotes] = useState('');
-
-  const farmNames = [
-    { id: '1', name: 'Zara Village Farm' },
+// Dummy data...
+const dummyFarmNames = [
+{ id: '1', name: 'Zara Village Farm' },
     { id: '2', name: 'Green Valley Gardens' },
     { id: '3', name: 'Sunny Side Fields' },
     { id: '4', name: 'Riverbend Orchards' },
-  ];
+];
 
-  const catNames = [
-    { id: '1', name: 'Feeds' },
-    { id: '2', name: 'Machinery' },
-    { id: '3', name: 'Farm Produce' },
-    { id: '4', name: 'Farm Tools' },
-  ];
+const dummyCatNames = [
+  { id: '1', name: 'Cassava' },
+  { id: '2', name: 'Maize' },
+  { id: '3', name: 'Watermelon' },
+  { id: '4', name: 'Orange' },
+  { id: '5', name: 'Cucumber' },
+];
 
+const dummyStatusNames = [
+  { id: '1', name: 'In Stock / Available' },
+  { id: '2', name: 'Reserved / Allocated' },
+  { id: '3', name: 'On Order / Incoming' },
+  { id: '4', name: 'Backordered' },
+  { id: '5', name: 'Out of Stock / Unavailable' },
+  { id: '6', name: 'Damaged' },
+  { id: '7', name: 'In Transit' },
+  { id: '8', name: 'Under Inspection / Quality Check' },
+
+];
+
+const InventoryScreen = () => {
+  const [selectedFarm, setSelectedFarm] = useState(null);
+  const [description, setDescription] = useState('');
+  const [secondaryDescription, setSecondaryDescription] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [unit, setUnit] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [notes, setNotes] = useState('');
+  const [dynamicItems, setDynamicItems] = useState(['']);
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const [farmLabelInv, setFarmLabelInv] = useState('Select Farm to Log Harvest');
+  const [categoryLabelInv, setCategoryLabelInv] = useState('What we Harvest');
+  const [statusLabelInv, setStatusLabelInv] = useState('Select Status');
   
+
   const handleFarmSelect = (farm) => {
     setSelectedFarm(farm);
-    setFarmDropdownVisible(false);
+    // You'd typically update farmLabelInv here based on the farm object.
+    // For example: setFarmLabelInv(farm ? `Farm: ${farm.name}` : 'Select Farm for Inventory');
+  };
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+    // You'd typically update categoryLabelInv here based on the category object.
+    // For example: setCategoryLabelInv(category ? `Category: ${category.name}` : 'Inventory Category');
+  };
+  const handleStatusSelect = (status) => {
+    setSelectedStatus(status);
+    // You'd typically update categoryLabelInv here based on the category object.
+    // For example: setCategoryLabelInv(category ? `Category: ${category.name}` : 'Inventory Category');
+  };
+  const handleDynamicItemsChange = (newItems) => {
+    setDynamicItems(newItems);
   };
 
-    const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-    setCategoryDropdownVisible(false);
-  };
+  const handleDateChange = (date) => { setSelectedDate(date); };
 
   const handleSubmit = () => {
-    console.log('Selected Farm:', selectedFarm ? selectedFarm.name : 'None');
-    console.log('Quantity:', quantity);
-    console.log('Unit:', unit);
-    //console.log('Crop Types:', selectedCropTypes);
-    console.log('Selected Category:', selectedCategory ? selectedCategory.name : 'None');
-    console.log('Notes:', notes);
+    console.log('Harvest Log Form Submitted!', {
+      selectedFarm, // Uncomment if you want to log it
+      selectedDate: selectedDate?.toISOString(),
+      //description,
+      //secondaryDescription,
+      quantity,
+      unit,
+      selectedCategory, // Uncomment if you want to log it
+      selectedStatus, // Uncomment if you want to log it
+      notes,
+      //dynamicItems,
+    });
+    // Reset all states
+    setSelectedFarm(null);
+    setSelectedDate(null);
+    setDescription('');
+    setSecondaryDescription('');
+    setQuantity('');
+    setUnit('');
+    setNotes('');
+    setSelectedCategory(null);
+    setSelectedStatus(null);
+    setDynamicItems(['']);
+    setFarmLabelInv('Select Farm to Log Harvest');
+    setCategoryLabelInv('What we Harvest');
+    setStatusLabelInv('Select Status');
   };
 
-  const router = useRouter();
-  const navigation = useNavigation();
+  // Calculate keyboardVerticalOffset for iOS.
+  // This value should be the height of your fixed header + any top padding/safe area.
+  // Assuming HeaderWithBackCard is 60px height + 30px spaceTop, and SafeAreaView adds its own padding.
+  // You might need to adjust this value through trial and error on iOS devices.
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 90 + (SIZES.padding * 2) : 0; // Example: 60 (header) + 30 (spaceTop) + some SafeArea/padding
+
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <SafeAreaView style={styles.mainContainer}>
+    <SafeAreaView style={styles.mainContainer}>
+      {/* Header is outside KeyboardAvoidingView because it's fixed */}
+      <HeaderWithBackCard title="Add New Inventory" spaceTop={30} />
 
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={24} color={COLORS.white} />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Add New Item</Text>
-        </View>
-
-        <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoidingView} // Apply flex: 1 here
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={keyboardVerticalOffset} // Crucial for iOS
+      >
+        <ScrollView
+          contentContainerStyle={styles.formScrollViewContent}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled" // Helps with dismissing keyboard on tap outside
+        >
           <View style={styles.formContainer}>
+            <InventoryForm
+              farmNames={dummyFarmNames} // Re-enabled for demonstration, assuming you want them
+              selectedFarm={selectedFarm}
+              onSelectFarm={handleFarmSelect}
+              farmDropdownLabel={farmLabelInv}
+              //catNames={dummyCatNames} // Re-enabled for demonstration
+              selectedCategory={selectedCategory}
+              onSelectCategory={handleCategorySelect}
 
-            <Text style={styles.label}>Select Farm Name</Text>
-            <TouchableOpacity style={styles.dropdownTrigger} onPress={() => setFarmDropdownVisible(true)}>
-              <Text style={selectedFarm ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder}>
-                {selectedFarm ? selectedFarm.name : 'Select farm name'}
-              </Text>
-              <Ionicons name="chevron-down" size={SIZES.font} color={COLORS.gray} />
-            </TouchableOpacity>
+              datePickerProps={{
+                  label: "Inventory Date",
+                  value: selectedDate,
+                  onChange: handleDateChange,
+                  placeholder: "Choose the date",
+                  // You can add min/max dates here if needed:
+                  // minimumDate: new Date(2023, 0, 1),
+                  // maximumDate: new Date(), // Current date
+              }}
 
-            <Modal
-              animationType="fade"
-              transparent={true}
-              visible={isFarmDropdownVisible}
-              onRequestClose={() => setFarmDropdownVisible(false)}
-            >
-              <TouchableOpacity
-                style={styles.modalOverlay}
-                activeOpacity={1}
-                onPressOut={() => setFarmDropdownVisible(false)}
-              >
-                <View style={styles.modalContent}>
-                  <ScrollView showsVerticalScrollIndicator={false}>
-                    {farmNames.map((farm) => (
-                      <TouchableOpacity
-                        key={farm.id}
-                        style={styles.modalOption}
-                        onPress={() => handleFarmSelect(farm)}
-                      >
-                        <Text style={styles.modalOptionText}>
-                          {farm.name}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
-                </View>
-              </TouchableOpacity>
-            </Modal>
-
-            <Text style={styles.label}>Inventory Description</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Describe this item"
-              placeholderTextColor={COLORS.gray}
-              
-              value={description}
-              onChangeText={setDescription}
+              categoryDropdownLabel={categoryLabelInv}
+               statusNames={dummyStatusNames} // Re-enabled for demonstration
+              selectedStatus={selectedStatus}
+              onSelectStatus={handleStatusSelect}
+              statusDropdownLabel={statusLabelInv}
+              description={description}
+              onDescriptionChange={setDescription}
+              showMainDescription={false}
+              secondaryDescriptionProps={{
+                label: 'Describe this Inventory Item',
+                placeholder: 'e.g., What does it do?',
+                value: secondaryDescription,
+                onChangeText: setSecondaryDescription,
+                numberOfLines: 4,
+              }}
+              //secondaryDescriptionProps={null}
+              // additionalDescriptionContent={
+              //   <AddMoreTextInput
+              //     label="Inventory Detail"
+              //     placeholder="Enter additional inventory info"
+              //     initialValues={dynamicItems}
+              //     onValuesChange={handleDynamicItemsChange}
+              //   />
+              // }
+              additionalDescriptionContent={null}
+              quantity={quantity}
+              onQuantityChange={setQuantity}
+              unit={unit}
+              onUnitChange={setUnit}
+              notes={notes}
+              onNotesChange={setNotes}
+              onSubmit={handleSubmit}
+              submitButtonText="Save Inventory"
             />
-
-            <View style={styles.row}>
-              <View style={styles.inputGroup}>
-                <Text style={styles.label}>Quantity</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter quantity"
-                  placeholderTextColor={COLORS.gray}
-                  keyboardType="numeric"
-                  value={quantity}
-                  onChangeText={setQuantity}
-                />
-              </View>
-              <View style={styles.inputGroup}>
-                <Text style={styles.label}>Unit</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="e.g., KG, L"
-                  placeholderTextColor={COLORS.gray}
-                  keyboardType="default"
-                  value={unit}
-                  onChangeText={setUnit}
-                />
-              </View>
-            </View>
-
-            <Text style={styles.label}>Select Category</Text>
-            <TouchableOpacity style={styles.dropdownTrigger} onPress={() => setCategoryDropdownVisible(true)}>
-              <Text style={selectedCategory ? styles.dropdownTextSelected : styles.dropdownTextPlaceholder}>
-                {selectedCategory ? selectedCategory.name : 'Select category'}
-              </Text>
-              <Ionicons name="chevron-down" size={SIZES.font} color={COLORS.gray} />
-            </TouchableOpacity>
-
-            <Modal
-              animationType="fade"
-              transparent={true}
-              visible={isCategoryDropdownVisible}
-              onRequestClose={() => setCategoryDropdownVisible(false)}
-            >
-              <TouchableOpacity
-                style={styles.modalOverlay}
-                activeOpacity={1}
-                onPressOut={() => setCategoryDropdownVisible(false)}
-              >
-                <View style={styles.modalContent}>
-                  <ScrollView showsVerticalScrollIndicator={false}>
-                    {catNames.map((category) => (
-                      <TouchableOpacity
-                        key={category.id}
-                        style={styles.modalOption}
-                        onPress={() => handleCategorySelect(category)}
-                      >
-                        <Text style={styles.modalOptionText}>
-                          {category.name}
-                        </Text>
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
-                </View>
-              </TouchableOpacity>
-            </Modal>
-
-            <Text style={styles.label}>Notes</Text>
-            <TextInput
-              style={styles.notesInput}
-              placeholder="Add any additional notes"
-              placeholderTextColor={COLORS.gray}
-              multiline={true}
-              numberOfLines={4}
-              value={notes}
-              onChangeText={setNotes}
-            />
-
-            <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-              <Text style={styles.submitButtonText}>Save Inventory</Text>
-            </TouchableOpacity>
-
           </View>
         </ScrollView>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
-  )
-}
-
-export default FarmFormScreen
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
-
   mainContainer: {
-    flexGrow: 1,
+    flex: 1, // SafeAreaView should typically take full height
     backgroundColor: COLORS.white,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: SIZES.padding,
-    paddingVertical: SIZES.medium,
-  },
-  backButton: {
-    backgroundColor: COLORS.farmInventoryOrange,
-    width: SIZES.xxl,
-    height: SIZES.xxl,
-    borderRadius: SIZES.xxl / 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    fontSize: SIZES.h1 + 3,
-    fontWeight: 'bold',
-    color: COLORS.black,
-    marginLeft: SIZES.margin,
-    fontFamily: 'PoppinsBold'
-  },
-  logoContainer: {
-    alignItems: 'center',
-    paddingVertical: SIZES.padding,
-  },
-  logo: {
-    width: 150,
-    height: 50,
+  keyboardAvoidingView: {
+    flex: 1, // Crucial for KeyboardAvoidingView to take available space
   },
   formScrollViewContent: {
-    flexGrow: 1,
+    flexGrow: 1, // Allows content to grow and be scrollable
+    // No explicit padding bottom here if formContainer handles it
   },
   formContainer: {
-    flex: 1,
+    flexGrow: 1, // Allows the form container to expand
     backgroundColor: COLORS.primary,
     borderTopLeftRadius: SIZES.topRadius,
     borderTopRightRadius: SIZES.topRadius,
     padding: SIZES.padding,
     paddingTop: SIZES.padding * 2,
     paddingHorizontal: SIZES.padding,
+    paddingBottom: '20%', // Ensure ample padding at the bottom for keyboard push-up
   },
-  scrollContainer: {
-    flexGrow: 1,
-    paddingTop: 15,
-    paddingBottom: 10,
-    justifyContent: 'space-between',
-  },
-  label: {
-    fontSize: SIZES.medium,
-    color: COLORS.black,
-    marginBottom: SIZES.base,
-    fontWeight: 'bold',
-    fontFamily: 'PoppinsBold'
-  },
-  dropdownTrigger: {
-    backgroundColor: COLORS.lightGray,
-    borderRadius: SIZES.radius,
-    paddingHorizontal: SIZES.medium,
-    paddingVertical: SIZES.base * 1.5,
-    marginBottom: SIZES.margin,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  dropdownTextPlaceholder: {
-    fontSize: SIZES.font,
-    color: COLORS.gray,
-    fontFamily: 'PoppinsMedium'
-  },
-  dropdownTextSelected: {
-    fontSize: SIZES.font,
-    color: COLORS.darkGray,
-    fontFamily: 'PoppinsMedium'
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    backgroundColor: COLORS.white,
-    borderRadius: SIZES.radius,
-    padding: SIZES.padding,
-    width: '80%',
-    maxHeight: '50%',
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  modalOption: {
-    paddingVertical: SIZES.medium,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.lightGray,
-  },
-  modalOptionText: {
-    fontSize: SIZES.font,
-    color: COLORS.darkGray,
-    fontFamily: 'PoppinsMedium'
-  },
-  modalCloseButton: {
-    marginTop: SIZES.padding,
-    backgroundColor: COLORS.lightGray,
-    padding: SIZES.base,
-    borderRadius: SIZES.radius,
-    alignItems: 'center',
-  },
-  modalCloseButtonText: {
-    fontSize: SIZES.font,
-    color: COLORS.darkGray,
-  },
-  input: {
-    backgroundColor: COLORS.lightGray,
-    borderRadius: SIZES.radius,
-    paddingHorizontal: SIZES.medium,
-    paddingVertical: SIZES.base * 1.5,
-    marginBottom: SIZES.margin,
-    fontSize: SIZES.font,
-    color: COLORS.darkGray,
-    fontFamily: 'PoppinsMedium'
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: SIZES.margin,
-  },
-  inputGroup: {
-    flex: 1,
-    marginRight: SIZES.base,
-  },
-  checkboxGroupLabel: {
-    marginTop: SIZES.margin / 2,
-  },
-  checkboxGroup: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: SIZES.margin,
-    justifyContent: 'space-between',
-  },
-  checkboxItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '48%',
-    marginBottom: SIZES.base,
-  },
-  checkbox: {
-    borderRadius: SIZES.base / 2,
-    marginRight: SIZES.base,
-    width: SIZES.medium,
-    height: SIZES.medium,
-  },
-  checkboxLabel: {
-    fontSize: SIZES.font,
-    color: COLORS.black,
-    fontFamily: 'PoppinsMedium'
-  },
-  notesInput: {
-    backgroundColor: COLORS.lightGray,
-    borderRadius: SIZES.radius,
-    paddingHorizontal: SIZES.medium,
-    paddingVertical: SIZES.medium,
-    marginBottom: SIZES.margin,
-    fontSize: SIZES.font,
-    color: COLORS.darkGray,
-    minHeight: 100,
-    textAlignVertical: 'top',
-    fontFamily: 'PoppinsMedium'
-  },
-  submitButton: {
-    backgroundColor: COLORS.farmInventoryOrange,
-    borderRadius: SIZES.radius,
-    paddingVertical: SIZES.medium,
-    alignItems: 'center',
-    marginTop: 30,
-    marginBottom: 50,
-  },
-  submitButtonText: {
-    color: COLORS.white,
-    fontSize: SIZES.large,
-    fontFamily: 'PoppinsMedium'
-  },
-})
+});
+
+export default InventoryScreen;

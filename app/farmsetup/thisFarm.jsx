@@ -1,6 +1,8 @@
+import AddMoreTextInput from '@/components/AddMoreTextInput';
 import HeaderWithBackCard from '@/components/HeaderWithBackCard';
 import InventoryForm from '@/components/InventoryForm';
 import { COLORS, SIZES } from '@/constants/ThemeColors';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import {
   KeyboardAvoidingView,
@@ -28,9 +30,14 @@ const dummyCatNames = [
 ];
 
 const dummyStatusNames = [
-  { id: '1', name: 'In Progress' },
-  { id: '2', name: 'Completed' },
-  { id: '3', name: 'Pending' },
+  { id: '1', name: 'In Stock / Available' },
+  { id: '2', name: 'Reserved / Allocated' },
+  { id: '3', name: 'On Order / Incoming' },
+  { id: '4', name: 'Backordered' },
+  { id: '5', name: 'Out of Stock / Unavailable' },
+  { id: '6', name: 'Damaged' },
+  { id: '7', name: 'In Transit' },
+  { id: '8', name: 'Under Inspection / Quality Check' },
 
 ];
 
@@ -38,12 +45,19 @@ const InventoryScreen = () => {
   const [selectedFarm, setSelectedFarm] = useState(null);
   const [description, setDescription] = useState('');
   const [secondaryDescription, setSecondaryDescription] = useState('');
+
+  const [tertiaryDescription, setTertiaryDescription] = useState('');
+  const [locationDescription, setLocationDescription] = useState('');
+   const [farmAdminDescription, setfarmAdminDescription] = useState('');
+   const [phoneAdminDescription, setphoneAdminDescription] = useState('');
+
   const [quantity, setQuantity] = useState('');
   const [unit, setUnit] = useState('');
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [notes, setNotes] = useState('');
   const [dynamicItems, setDynamicItems] = useState(['']);
+  const [breedItems, setBreedItems] = useState(['']);
   const [selectedDate, setSelectedDate] = useState(null);
 
   const [farmLabelInv, setFarmLabelInv] = useState('Select Farm to Log Harvest');
@@ -69,37 +83,50 @@ const InventoryScreen = () => {
   const handleDynamicItemsChange = (newItems) => {
     setDynamicItems(newItems);
   };
+  const handleBreedItemsChange = (newBreedItems) => {
+    setBreedItems(newBreedItems);
+  };
 
   const handleDateChange = (date) => { setSelectedDate(date); };
 
   const handleSubmit = () => {
-    console.log('Harvest Log Form Submitted!', {
-      selectedFarm, // Uncomment if you want to log it
-      selectedDate: selectedDate?.toISOString(),
+    router.push('(tabs)')
+    console.log('Setup Completed!', {
+      //selectedFarm, // Uncomment if you want to log it
+      //selectedDate: selectedDate?.toISOString(),
+      locationDescription,
+      farmAdminDescription,
+      phoneAdminDescription,
       //description,
       //secondaryDescription,
-      quantity,
-      unit,
-      selectedCategory, // Uncomment if you want to log it
-      selectedStatus, // Uncomment if you want to log it
+      //quantity,
+      //unit,
+      //selectedCategory, // Uncomment if you want to log it
+      //selectedStatus, // Uncomment if you want to log it
       notes,
-      //dynamicItems,
+      dynamicItems,
+      breedItems,
     });
     // Reset all states
     setSelectedFarm(null);
     setSelectedDate(null);
     setDescription('');
     setSecondaryDescription('');
+    setLocationDescription('');
+    setfarmAdminDescription('');
+    setphoneAdminDescription('');
     setQuantity('');
     setUnit('');
     setNotes('');
     setSelectedCategory(null);
     setSelectedStatus(null);
     setDynamicItems(['']);
+    setBreedItems(['']);
     setFarmLabelInv('Select Farm to Log Harvest');
     setCategoryLabelInv('What we Harvest');
     setStatusLabelInv('Select Status');
   };
+  const router = useRouter();
 
   // Calculate keyboardVerticalOffset for iOS.
   // This value should be the height of your fixed header + any top padding/safe area.
@@ -110,7 +137,7 @@ const InventoryScreen = () => {
   return (
     <SafeAreaView style={styles.mainContainer}>
       {/* Header is outside KeyboardAvoidingView because it's fixed */}
-      <HeaderWithBackCard title="Add New Harvest" spaceTop={30} />
+      <HeaderWithBackCard title="Set Up Your Farm." spaceTop={30} />
 
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView} // Apply flex: 1 here
@@ -124,48 +151,79 @@ const InventoryScreen = () => {
         >
           <View style={styles.formContainer}>
             <InventoryForm
-              farmNames={dummyFarmNames} // Re-enabled for demonstration, assuming you want them
+              //farmNames={dummyFarmNames} // Re-enabled for demonstration, assuming you want them
               selectedFarm={selectedFarm}
               onSelectFarm={handleFarmSelect}
               farmDropdownLabel={farmLabelInv}
-              catNames={dummyCatNames} // Re-enabled for demonstration
+              //catNames={dummyCatNames} // Re-enabled for demonstration
               selectedCategory={selectedCategory}
               onSelectCategory={handleCategorySelect}
 
-              datePickerProps={{
-                  label: "Inventory Date",
-                  value: selectedDate,
-                  onChange: handleDateChange,
-                  placeholder: "Choose the date",
-                  // You can add min/max dates here if needed:
-                  // minimumDate: new Date(2023, 0, 1),
-                  // maximumDate: new Date(), // Current date
+              locationProps={{
+                label: 'Location', // Label for the new field
+                placeholder: 'e.g., location',
+                value: locationDescription,
+                onChangeText: setLocationDescription,
+                //multiline: true, // This field can be multiline
+                numberOfLines: 1,
+              }}
+
+              farmAdminProps={{
+                label: 'Farm Admin Name', // Label for the new field
+                placeholder: 'e.g., John',
+                value: farmAdminDescription,
+                onChangeText: setfarmAdminDescription,
+                //multiline: true, // This field can be multiline
+                numberOfLines: 1,
+              }}
+
+              phoneNumberProps={{
+                label: 'Farm Admin Phone Number', // Label for the new field
+                placeholder: 'e.g., 080123456789',
+                value: phoneAdminDescription,
+                onChangeText: setphoneAdminDescription,
+                //multiline: true, // This field can be multiline
+                numberOfLines: 1,
               }}
 
               categoryDropdownLabel={categoryLabelInv}
-               statusNames={dummyStatusNames} // Re-enabled for demonstration
+               //statusNames={dummyStatusNames} // Re-enabled for demonstration
               selectedStatus={selectedStatus}
               onSelectStatus={handleStatusSelect}
               statusDropdownLabel={statusLabelInv}
               description={description}
               onDescriptionChange={setDescription}
               showMainDescription={false}
-              // secondaryDescriptionProps={{
-              //   label: 'Item Sub-Description',
-              //   placeholder: 'e.g., brand, color, specific type',
-              //   value: secondaryDescription,
-              //   onChangeText: setSecondaryDescription,
-              // }}
-              secondaryDescriptionProps={null}
-              // additionalDescriptionContent={
-              //   <AddMoreTextInput
-              //     label="Inventory Detail"
-              //     placeholder="Enter additional inventory info"
-              //     initialValues={dynamicItems}
-              //     onValuesChange={handleDynamicItemsChange}
-              //   />
-              // }
-              additionalDescriptionContent={null}
+              secondaryDescriptionProps={{
+                label: 'Whats your Farm Name?',
+                placeholder: 'e.g., enter farm name',
+                value: secondaryDescription,
+                onChangeText: setSecondaryDescription,
+                //numberOfLines: 4,
+              }}
+
+              
+              //secondaryDescriptionProps={null}
+              additionalDescriptionContent={
+                <AddMoreTextInput
+                  label="What we Plant?"
+                  placeholder="Enter what is cultivated this farm"
+                  initialValues={dynamicItems}
+                  onValuesChange={handleDynamicItemsChange}
+                />
+              }
+              //additionalDescriptionContent={null}
+
+              //secondAdditionalDescriptionContent={null}
+              secondAdditionalDescriptionContent={
+                <AddMoreTextInput
+                  label="What we Breed?"
+                  placeholder="Enter livestocks breed on this farm"
+                  initialValues={breedItems}
+                  onValuesChange={handleBreedItemsChange}
+                />
+              }
+              showQuantityAndUnit={false}
               quantity={quantity}
               onQuantityChange={setQuantity}
               unit={unit}
@@ -173,7 +231,7 @@ const InventoryScreen = () => {
               notes={notes}
               onNotesChange={setNotes}
               onSubmit={handleSubmit}
-              submitButtonText="Save Harvest Detail"
+              submitButtonText="Finish Setup"
             />
           </View>
         </ScrollView>

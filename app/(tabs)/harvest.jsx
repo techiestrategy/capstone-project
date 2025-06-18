@@ -1,3 +1,4 @@
+import Button from '@/components/Button';
 import HarvestCard from '@/components/HarvestCard';
 import { COLORS, SIZES } from '@/constants/ThemeColors';
 import { useNavigation } from '@react-navigation/native';
@@ -8,7 +9,6 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View
 } from 'react-native';
 // Mock data for the farms list
@@ -92,9 +92,8 @@ const MyHarvestScreen = () => {
         contentContainerStyle={styles.listContentContainer}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={
-            <TouchableOpacity style={styles.addButton} activeOpacity={0.8} onPress={handleLogHarvest}>
-                <Text style={styles.addButtonText}>Log New Harvest</Text>
-            </TouchableOpacity>
+            
+            <Button text="Log New Harvest" onPress={handleLogHarvest} spaceBottom={20} />
         }
       />
     </SafeAreaView>
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 28,
-    fontWeight: 'bold',
+     fontFamily: 'PoppinsBold',
     color: COLORS.black,
     marginLeft: 0,
   },

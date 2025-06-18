@@ -1,3 +1,4 @@
+import Button from '@/components/Button';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
@@ -13,7 +14,7 @@ const register = () => {
   const [agreeToTerms, setAgreeToTerms] = useState(false);
 
 const handleSignUp = () => {
-    console.log('Sign In pressed!');
+    console.log('Sign Up pressed!');
     console.log('Email:', email);
     console.log('Phone:', phone);
     console.log('Password:', password);
@@ -141,9 +142,9 @@ const handleSignUp = () => {
            
           </View>
 
-          <TouchableOpacity style={styles.signInButton} onPress={handleSignUp}>
-            <Text style={styles.signInButtonText}>Sign Up</Text>
-          </TouchableOpacity>
+          
+
+          <Button text="Sign Up" onPress={handleSignUp} />
 
           <View style={styles.signUpPrompt}>
             <Text style={styles.signUpText}>Already have an account?</Text>
