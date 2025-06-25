@@ -51,12 +51,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightGray,
     borderRadius: 20,
     padding: 15,
+    marginTop: 20,
   },
   cardTitle: {
     fontSize: SIZES.medium,
     color: COLORS.darkGray,
-    fontWeight: '600',
-    fontFamily: 'PoppinsMedium'
+    fontFamily: 'PoppinsMedium',
+    lineHeight: 19,
   },
   cardSubtitle: {
     fontSize: SIZES.font,

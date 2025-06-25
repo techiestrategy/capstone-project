@@ -5,6 +5,7 @@ import { COLORS, SIZES } from '@/constants/ThemeColors';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import {
+  Dimensions,
   FlatList,
   Image,
   SafeAreaView,
@@ -17,10 +18,8 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { Dimensions } from 'react-native';
-
 const screenWidth = Dimensions.get('window').width;
-const itemWidth = screenWidth * 0.85;
+const itemWidth = screenWidth * 0.85; // For FarmCard
 
 // Mock data for the farms list
 const farmData = [
@@ -50,30 +49,24 @@ const farmData = [
   },
 ];
 
+// Mock data for earnings
+const earningsData = [
+  { id: 'e1', crop: 'Maize', amount: '50.0M', percentage: '36.50', isIncrease: true },
+  { id: 'e2', crop: 'Cassava', amount: '150.0M', percentage: '36.50', isIncrease: false },
+  { id: 'e3', crop: 'Rice', amount: '75.0M', percentage: '12.80', isIncrease: true },
+  { id: 'e4', crop: 'Wheat', amount: '25.0M', percentage: '5.20', isIncrease: false },
+];
+
 // --- Reusable UI Components ---
 
-const Header = () => (
-  <View style={styles.headerContainer}>
-    <View style={styles.headerLeft}>
-      <View style={styles.logoContainer}>
-        <Image
-          source={require('@/assets/images/farmventory-logo.png')} // You'll need to add your logo here
-          style={styles.logo}
-          resizeMode="contain"
-        />
-      </View>
-    </View>
-    <View style={styles.headerRight}>
-      <TouchableOpacity style={styles.notificationButton}>
-        <Ionicons name="notifications" size={24} color={COLORS.darkGray} />
-      </TouchableOpacity>
-      <Image
-        source={{ uri: 'https://i.pravatar.cc/150?u=a042581f4e29026704d' }}
-        style={styles.profileImage}
-      />
-    </View>
-  </View>
-);
+// Helper component for FlatList separators
+const ListSeparator = ({ width = SIZES.padding }) => <View style={{ width: width }} />;
+
+
+
+
+
+  
 
 
 
@@ -82,17 +75,78 @@ const Header = () => (
 const DashboardScreen = () => {
   const router = useRouter();
 
+  const Header = () => (
+  
+
+  <View style={styles.headerContainer}>
+    <View style={styles.headerLeft}>
+      <View style={styles.logoContainer}>
+        <Image
+          source={require('@/assets/images/farmventory-logo.png')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+      </View>
+    </View>
+    <View style={styles.headerRight}>
+      <TouchableOpacity style={styles.notificationButton} onPress={handleNotification}>
+        <Ionicons name="notifications" size={24} color={COLORS.darkGray} />
+      </TouchableOpacity>
+
+      <TouchableOpacity style={{}} onPress={handleProfile}>
+      <Image
+        source={{ uri: 'https://i.pravatar.cc/150?u=a042581f4e29026704d' }}
+        style={styles.profileImage}
+      />
+      </TouchableOpacity>
+    </View>
+  </View>
+);
+
+  const handleNotification = () => {
+    // Navigate to forgot password screen
+    router.push('notification/NotificationsScreen')
+    console.log('Navigating to Notifications');
+  };
+
+    const handleProfile = () => {
+    // Navigate to forgot password screen
+    router.push('settings/UsersScreen')
+    console.log('Navigating to Notifications');
+  };
+
+  const renderEarningsItem = ({ item }) => (
+    <View style={styles.earningsCardWrapper}>
+      <EarningsCard
+        crop={item.crop}
+        amount={item.amount}
+        percentage={item.percentage}
+        isIncrease={item.isIncrease}
+      />
+    </View>
+  );
+
+  
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
+      <Header />
       <View style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          <Header />
+        <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
 
-          {/* Earnings Section */}
-          <View style={styles.earningsSection}>
-            <EarningsCard crop="Maize" amount="50.0M" percentage="36.50" isIncrease={true} />
-            <EarningsCard crop="Cassava" amount="150.0M" percentage="36.50" isIncrease={false} />
+          {/* Earnings Section - Now a FlatList */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Earnings Overview</Text>
+            <FlatList
+              data={earningsData}
+              renderItem={renderEarningsItem}
+              keyExtractor={(item) => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.earningsListContentContainer}
+              // Use the ListSeparator component for consistent spacing
+              ItemSeparatorComponent={() => <ListSeparator width={15} />}
+            />
           </View>
 
           {/* My Farm Section */}
@@ -105,18 +159,19 @@ const DashboardScreen = () => {
             </View>
 
             <FlatList
-              horizontal showsHorizontalScrollIndicator={false}
+              horizontal
+              showsHorizontalScrollIndicator={false}
               data={farmData}
               renderItem={({ item }) => (
+                 <TouchableOpacity style={styles.card} onPress={() => router.push({ pathname: 'myfarm/farm-detail/[farmId]', params: { farmId: item.id } })}>
                 <View style={{ width: itemWidth }}>
                   <FarmCard item={item} />
                 </View>
+                </TouchableOpacity>
               )}
               keyExtractor={(item) => item.id}
               contentContainerStyle={styles.listContentContainer}
-              showsVerticalScrollIndicator={false}
-              ItemSeparatorComponent={() => <View style={{ width: 16 }} />}
-
+              ItemSeparatorComponent={() => <ListSeparator width={16} />} // Use the new component
             />
           </View>
 
@@ -133,21 +188,16 @@ const DashboardScreen = () => {
           </View>
         </ScrollView>
       </View>
-
-
     </SafeAreaView>
   );
 };
 
 // --- Styles ---
 
-
-
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: COLORS.white,
-
   },
   scrollViewContent: {
     paddingHorizontal: 20,
@@ -157,27 +207,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 10,
-    paddingBottom: 20,
+    paddingHorizontal: 20,
     marginTop: 40,
+    paddingVertical: 1,
   },
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  logoIconContainer: {
-    width: 40,
-    height: 40,
-    backgroundColor: COLORS.lightGreen,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 8,
-    marginRight: 10,
-  },
-  logoText: {
-    fontSize: SIZES.xl,
-    fontWeight: 'bold',
-    color: COLORS.darkGray,
+  logoContainer: {
+    // No specific styles needed here if directly using Image
   },
   logo: {
     width: 150,
@@ -201,12 +240,15 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     marginLeft: 15,
   },
-  earningsSection: {
-
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 15,
-
+  earningsListContentContainer: {
+    // No horizontal padding here. The overall screen padding is handled by scrollViewContent.
+    // ItemSeparatorComponent handles spacing between items.
+    // If you need padding at the start/end of the FlatList specifically, add it here.
+    paddingRight: 0, // Ensure no extra padding from contentContainer if not needed
+  },
+  earningsCardWrapper: {
+    width: screenWidth * 0.45, // **CRUCIAL: Explicit width for each card**
+    // No marginRight here, it's handled by ItemSeparatorComponent
   },
   section: {
     marginTop: 25,
@@ -226,6 +268,9 @@ const styles = StyleSheet.create({
     fontSize: SIZES.font,
     color: COLORS.gray,
     fontWeight: '500',
+  },
+  listContentContainer: {
+    paddingRight: SIZES.padding * 2, // Padding to the right for the FarmCard FlatList
   },
   farmCard: {
     width: 280,
@@ -257,14 +302,13 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: SIZES.small,
   },
-
   bottomNav: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     height: 75,
     backgroundColor: COLORS.lightGray,
-    paddingBottom: 5, // For better spacing with labels
+    paddingBottom: 5,
   },
   navItem: {
     alignItems: 'center',
@@ -280,7 +324,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 10, // Spacing above the button
+    marginTop: 10,
     marginBottom: 40,
   },
   addButtonText: {

@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons'; // For icons
-import { useNavigation, useRouter } from 'expo-router'; // For navigation like goBack()
+import { router, useNavigation, useRouter } from 'expo-router'; // For navigation like goBack()
 import {
   FlatList,
   Image,
@@ -58,6 +58,12 @@ const pesticidesData = [
   },
 ];
 
+const cartLoad = () => {
+    // Navigate to forgot password screen
+    router.push('pesticides/CartScreen')
+    console.log('Navigating to Cart');
+  };
+
 const PesticidesScreen = () => {
   const router = useRouter();
   const navigation = useNavigation();
@@ -84,7 +90,7 @@ const PesticidesScreen = () => {
         </TouchableOpacity> */}
         <Text style={styles.headerTitle}>Pesticides</Text>
         </View>
-        <TouchableOpacity onPress={() => console.log('Cart Pressed')} style={styles.headerIcon}>
+        <TouchableOpacity onPress={cartLoad} style={styles.headerIcon}>
           <Ionicons name="cart-outline" size={28} color={COLORS.black} />
           {/* You would typically add a badge here for cart count */}
           <View style={styles.cartBadge}>
@@ -126,10 +132,11 @@ const styles = StyleSheet.create({
     padding: SIZES.base,
     position: 'relative', 
   },
-  headerTitle: {
-    fontSize: SIZES.h1,
-    color: COLORS.black,
-    fontFamily: 'PoppinsBold', 
+headerTitle: {
+    fontSize: 20,
+     fontFamily: 'PoppinsMedium',
+    color: COLORS.farmInventoryGreen,
+    marginLeft: 0,
   },
 
   cartBadge: {

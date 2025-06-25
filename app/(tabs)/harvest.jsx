@@ -124,9 +124,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerTitle: {
-    fontSize: 28,
-     fontFamily: 'PoppinsBold',
-    color: COLORS.black,
+    fontSize: 20,
+     fontFamily: 'PoppinsMedium',
+    color: COLORS.farmInventoryGreen,
     marginLeft: 0,
   },
   headerSubtitle: {

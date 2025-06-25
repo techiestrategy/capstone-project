@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 
-const Button = ({ text, textColor = '#fff', spaceBottom = 0, onPress }) => {
+const Button = ({ text, textColor = '#fff', bgColor = '#F58634', bColor = '#F58634', spaceBottom = 0, spaceInner = 0, border= 1, onPress }) => {
   const { width } = useWindowDimensions();
   const buttonWidth = width * 0.9;
 
@@ -16,9 +16,9 @@ const Button = ({ text, textColor = '#fff', spaceBottom = 0, onPress }) => {
         <Text style={[styles.buttonText, { color: textColor }]}>{text}</Text>
       </TouchableOpacity> */}
 
-      <TouchableOpacity style={[styles.signInButton, { marginVertical: spaceBottom }]} onPress={onPress}>
-            <Text style={[styles.signInButtonText, { color: textColor }]}>{text}</Text>
-          </TouchableOpacity>
+      <TouchableOpacity style={[styles.signInButton, { marginVertical: spaceBottom }, { paddingHorizontal: spaceInner }, { backgroundColor: bgColor }, { borderColor: bColor }, { borderWidth: border }]} onPress={onPress}>
+        <Text style={[styles.signInButtonText, { color: textColor }]}>{text}</Text>
+      </TouchableOpacity>
     </View>
   );
 };

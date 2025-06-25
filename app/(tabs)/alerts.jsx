@@ -97,11 +97,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  headerTitle: {
-    fontSize: 28,
-    color: COLORS.black,
+headerTitle: {
+    fontSize: 20,
+     fontFamily: 'PoppinsMedium',
+    color: COLORS.farmInventoryGreen,
     marginLeft: 0,
-    fontFamily: 'PoppinsBold'
   },
   headerSubtitle: {
     fontSize: 14,

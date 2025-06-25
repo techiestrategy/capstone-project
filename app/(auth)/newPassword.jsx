@@ -1,3 +1,4 @@
+import Button from '@/components/Button';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
@@ -6,23 +7,24 @@ import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const login = () => {
-  const [emailPhone, setEmailPhone] = useState('');
+  
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [agreeToTerms, setAgreeToTerms] = useState(false);
+
+  const [Confirmpassword, setConfirmPassword] = useState('');
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
 
 const handleSignIn = () => {
-    console.log('Sign In pressed!');
-    console.log('Email/Phone:', emailPhone);
+   //router.push('(tabs)')
+   router.push('/farmsetup/thisFarm')
+    
     console.log('Password:', password);
-    console.log('Agreed to Terms:', agreeToTerms);
-    // Add your sign-in logic here (e.g., API call)
+    console.log('Confirmpassword:', Confirmpassword);
+  
   };
 
-  const handleGoogleSignIn = () => {
-    console.log('Sign In with Google pressed!');
-    // Add your Google sign-in logic here
-  };
+  
 
   const handleSignUp = () => {
     // Navigate to sign-up screen
@@ -30,10 +32,7 @@ const handleSignIn = () => {
     console.log('Navigating to Sign Up');
   };
 
-  const handleForgotPassword = () => {
-    // Navigate to forgot password screen
-    console.log('Navigating to Forgot Password');
-  };
+ 
 
 
   const router = useRouter();
@@ -43,11 +42,10 @@ const handleSignIn = () => {
       
         {/* Header */}
           <View style={styles.header}>
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            {/* <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
               <FontAwesome5 name="arrow-circle-left" size={24} color="black" />
-            </TouchableOpacity>
-            <Text style={styles.headerTitle}>Reset your password</Text>
-            <Text style={{ fontFamily: 'PoppinsMedium', textAlign: 'center'}}>Please enter your email and we will send an OTP in the next step to reset your password.</Text>
+            </TouchableOpacity> */}
+            <Text style={styles.headerTitle}>Create New Password</Text>
           </View>
 
           <View style={styles.logoContainer}>
@@ -62,26 +60,69 @@ const handleSignIn = () => {
 
 <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
       <View style={styles.formContainer}>
-        <Text style={styles.inputLabel}>Enter Your Email Address </Text>
+        
+          <Text style={styles.inputLabel}>Password</Text>
           <View style={styles.inputWrapper}>
             
-            <FontAwesome5 name="envelope" size={24} color="black" style={styles.inputIcon} />
+            <FontAwesome5 name="lock" size={24} color="black" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Email"
-              value={emailPhone}
-              onChangeText={setEmailPhone}
-              keyboardType="email-address"
-              autoCapitalize="none"
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
             />
-          </View>         
+            <TouchableOpacity
+              onPress={() => setShowPassword(!showPassword)}
+              style={styles.passwordVisibilityToggle}
+            >
+              <FontAwesome5
+                name={showPassword ? 'eye' : 'eye-slash'}
+                size={20}
+                color="#F58634"
+              />
+              
+            </TouchableOpacity>
+          </View>
 
-          <TouchableOpacity style={styles.signInButton} onPress={handleSignIn}>
-            <Text style={styles.signInButtonText}>Continue</Text>
-          </TouchableOpacity>
+           <Text style={styles.inputLabel}>Confirm Password</Text>
+          <View style={styles.inputWrapper}>
+            
+            <FontAwesome5 name="lock" size={24} color="black" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm Password"
+              value={Confirmpassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry={!showPassword}
+            />
+            <TouchableOpacity
+              onPress={() => setShowConfirmPassword(!showPassword)}
+              style={styles.passwordVisibilityToggle}
+            >
+              <FontAwesome5
+                name={showPassword ? 'eye' : 'eye-slash'}
+                size={20}
+                color="#F58634"
+              />
+              
+            </TouchableOpacity>
+          </View>
+
+         
+
+          
+          <Button text="Update Password" onPress={handleSignIn}  />
+
+          
+
           
 
         </View>
+
+        
+
+
 
     {/* <View style={styles.Container}>
       <Text>login</Text>
@@ -101,7 +142,7 @@ const styles = StyleSheet.create({
     
   },
   header: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
@@ -115,8 +156,8 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 22,
+    fontWeight: 'bold',
     color: '#333',
-    fontFamily: 'PoppinsBold',
   },
   logoContainer: {
     alignItems: 'center',
@@ -134,7 +175,7 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 60,
     paddingHorizontal: 24,
-     paddingBottom: '90%',
+    paddingBottom: '30%',
   },
   scrollContainer: {
     flexGrow: 1, 
@@ -194,19 +235,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: 'bold',
   },
-  signInButton: {
-    backgroundColor: '#F58634', // Orange color for Sign In button
-    borderRadius: 8,
-    paddingVertical: 15,
-    alignItems: 'center',
-    marginBottom: 40,
-    marginTop: 30,
-  },
-  signInButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
+  
   signUpPrompt: {
     flexDirection: 'row',
     justifyContent: 'center',

@@ -19,6 +19,8 @@ export const COLORS = {
   farmInventoryGreen: '#00A859', // This was your main green
   farmInventoryOrange: '#F58634', // This was your main orange button
   background: '#FFFFFF',
+  formContainer: '#E6F4ED',
+ 
 };
 
 export const SIZES = {
