@@ -13,7 +13,7 @@ const HeaderTitleCard = ({ title, spaceTop = 0 }) => {
   return (
   <View style={[styles.header, { marginTop: spaceTop }]}>
             <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-              <Ionicons name="arrow-back" size={24} color={COLORS.white} />
+              <Ionicons name="arrow-back" size={16} color={COLORS.white} />
             </TouchableOpacity>
             <Text style={styles.headerTitle}>{title}</Text>
           </View>
@@ -32,16 +32,16 @@ const styles = StyleSheet.create({
   },
   backButton: {
     backgroundColor: COLORS.farmInventoryOrange,
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
     borderRadius: SIZES.xxl,
     justifyContent: 'center',
     alignItems: 'center',
   },
   headerTitle: {
-    fontSize: SIZES.h1,
+    fontSize: 20,
     color: COLORS.black,
     marginLeft: 10,
-    fontFamily: 'PoppinsBold'
+    fontFamily: 'PoppinsMedium'
   },
 });

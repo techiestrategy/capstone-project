@@ -1,7 +1,7 @@
 // app/pesticides/detail.jsx (Your Pesticide Detail Screen)
 
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useLocalSearchParams, useNavigation } from 'expo-router'; // Correct imports
+import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router'; // Correct imports
 import { useState } from 'react';
 import {
   Image,
@@ -46,6 +46,14 @@ const PesticideDetailScreen = () => {
     console.log(`Added ${quantity} of ${product.name} (ID: ${product.id}) to cart.`);
   };
 
+  const router = useRouter();
+
+   const cartLoad = () => {
+    // Navigate to forgot password screen
+    router.push('pesticides/CartScreen')
+    console.log('Navigating to Cart');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
@@ -54,7 +62,7 @@ const PesticideDetailScreen = () => {
           <Ionicons name="arrow-back" size={28} color={COLORS.black} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{product.name}</Text>
-        <TouchableOpacity onPress={() => console.log('Cart Pressed')} style={styles.headerIcon}>
+        <TouchableOpacity onPress={cartLoad} style={styles.headerIcon}>
           <Ionicons name="cart-outline" size={28} color={COLORS.black} />
           <View style={styles.cartBadge}>
             <Text style={styles.cartBadgeText}>2</Text>

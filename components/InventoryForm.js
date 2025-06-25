@@ -33,6 +33,7 @@ const InventoryForm = ({
   statusNames,
   selectedStatus,
   onSelectStatus,
+  showNotes = true,
   notes,
   onNotesChange,
   onSubmit,
@@ -201,7 +202,7 @@ const InventoryForm = ({
         </View>
       )}
 
-      <LabeledTextInput
+      {showNotes && (<LabeledTextInput
         label="Notes"
         placeholder="Add any additional notes"
         value={notes}
@@ -209,6 +210,7 @@ const InventoryForm = ({
         multiline={true}
         numberOfLines={4}
       />
+      )}
 
       <Button
         text={submitButtonText}

@@ -3,6 +3,7 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
+
 // import { Text } from 'react-native'; // You won't need Text here if you don't show a title
 
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -52,6 +53,8 @@ export default function RootLayout() {
         <Stack.Screen name="alert" options={{ headerShown: false }} />
         <Stack.Screen name="pesticides" options={{ headerShown: false }} />
          <Stack.Screen name="farmsetup" options={{ headerShown: false }} />
+         <Stack.Screen name="notification" options={{ headerShown: false }} />
+         <Stack.Screen name="settings" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>

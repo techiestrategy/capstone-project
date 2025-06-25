@@ -35,7 +35,7 @@ export default function TabLayout() {
       options={{
         //title: 'Dashboard',
         tabBarIcon: ({ color }) => (
-          <FontAwesome5 name="home" size={25} color={color} />
+          <FontAwesome5 name="home" size={20} color={color} />
         ),
         tabBarLabel: ({ focused }) => (
           <Text style={{ color: 'black', fontSize: 11, fontWeight: focused ? 'bold' : 'normal', }}>Dashboard</Text>
@@ -46,7 +46,7 @@ export default function TabLayout() {
         name="harvest"
         options={{
           //title: 'Harvest',
-          tabBarIcon: ({ color }) => <FontAwesome5 name="carrot" size={25} color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome5 name="carrot" size={20} color={color} />,
           tabBarLabel: ({ focused }) => (
           <Text style={{ color: 'black', fontSize: 11, fontWeight: focused ? 'bold' : 'normal', }}>Harvest</Text>
         ),
@@ -56,7 +56,7 @@ export default function TabLayout() {
         name="inventory"
         options={{
           //title: 'Inventory',
-          tabBarIcon: ({ color }) => <FontAwesome5 name="database" size={25} color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome5 name="database" size={20} color={color} />,
           tabBarLabel: ({ focused }) => (
           <Text style={{ color: 'black', fontSize: 11, fontWeight: focused ? 'bold' : 'normal', }}>Inventory</Text>
         ),
@@ -66,7 +66,7 @@ export default function TabLayout() {
         name="pesticides"
         options={{
           //title: 'Pesticides',
-          tabBarIcon: ({ color }) => <FontAwesome5 name="fire-extinguisher" size={25} color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome5 name="fire-extinguisher" size={20} color={color} />,
           tabBarLabel: ({ focused }) => (
           <Text style={{ color: 'black', fontSize: 11, fontWeight: focused ? 'bold' : 'normal', }}>Pesticides</Text>
         ),
@@ -76,7 +76,7 @@ export default function TabLayout() {
         name="alerts"
         options={{
           //title: 'Alerts',
-          tabBarIcon: ({ color }) => <FontAwesome name="bell" size={24} color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome name="bell" size={20} color={color} />,
           tabBarLabel: ({ focused }) => (
           <Text style={{ color: 'black', fontSize: 11, fontWeight: focused ? 'bold' : 'normal', }}>Alerts</Text>
         ),

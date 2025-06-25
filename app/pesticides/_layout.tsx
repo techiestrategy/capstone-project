@@ -10,6 +10,7 @@ export default function PesticidesLayout() {
         The 'name' prop should be "detail", matching the file name without the extension.
       */}
       <Stack.Screen name="details" options={{ headerShown: false }} />
+      <Stack.Screen name="CartScreen" options={{ headerShown: false }} />
 
       {/* Add other screens here if you add more files to app/pesticides/ */}
     </Stack>
